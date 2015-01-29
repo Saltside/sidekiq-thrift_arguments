@@ -1,7 +1,7 @@
 # coding: utf-8
 Gem::Specification.new do |spec|
   spec.name          = "sidekiq-thrift_arguments"
-  spec.version       = "0.1.0"
+  spec.version       = "0.2.0"
   spec.authors       = ["ahawkins"]
   spec.email         = ["adam@hawkins.io"]
   spec.summary       = %q{Transparently serialize/deserialize Thirft structs used a Sidekiq job arguments}
