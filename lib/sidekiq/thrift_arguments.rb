@@ -1,5 +1,5 @@
 require 'thrift'
-require 'thrift/utf8_json'
+require 'thrift/base64'
 require 'sidekiq'
 
 module Sidekiq
@@ -19,7 +19,7 @@ module Sidekiq
             {
               '__thrift__' => true,
               '__thrift_class__' => argument.class.name,
-              '__thrift_blob__' => Thrift::JsonSerializer.new.serialize(argument)
+              '__thrift_blob__' => argument.to_base64
             }
           else
             argument
@@ -36,7 +36,7 @@ module Sidekiq
       decoded = args.map do |argument|
         if argument.is_a?(Hash) && argument.key?('__thrift__')
           klass, blob = argument.fetch('__thrift_class__'), argument.fetch('__thrift_blob__')
-          Thrift::JsonDeserializer.new.deserialize(klass.constantize.new, blob)
+          klass.constantize.from_base64 blob
         else
           argument
         end
